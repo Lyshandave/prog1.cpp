@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class GitSimulator {
+public:
+    void add(const string& file) {
+        stagedFiles.push_back(file);
+        cout << "Added " << file << " to staging.\n";
+    }
+
+    void commit(const string& message) {
+        if (stagedFiles.empty()) {
+            cout << "No changes to commit.\n";
+            return;
+        }
+        commits.push_back({message, stagedFiles});
+        stagedFiles.clear();
+        cout << "Committed: " << message << "\n";
+    }
+
+    void showCommits() const {
+        for (const auto& commit : commits) {
+            cout << "Commit: " << commit.message << "\nFiles: ";
+            for (const auto& file : commit.files) {
+                cout << file << " ";
+            }
+            cout << "\n";
+        }
+    }
+
+private:
+    struct Commit {
+        string message;
+        vector<string> files;
+    };
+
+    vector<string> stagedFiles;
+    vector<Commit> commits;
+};
+
+int main() {
+    GitSimulator git;
+    git.add("file1.txt");
+    git.commit("Initial commit");
+    git.add("file2.txt");
+    git.commit("Added file2");
+    git.showCommits();
+    
+    return 0;
+}
