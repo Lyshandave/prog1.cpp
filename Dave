@@ -1,0 +1,73 @@
+private void iDelete()
+{ 
+ foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+ {
+ dataGridView1.Rows.RemoveAt(item.Index);
+ }
+} 
+ 
+private void button4_Click(object sender, EventArgs e)
+{
+ iDelete();
+}
+private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+{
+ iDelete();
+}
+Reset button
+private void button2_Click(object sender, EventArgs e)
+{
+ iReset();
+}
+private void iReset()
+{ //Clear all the data on the textbox
+ foreach(var c in this.Controls)
+ {
+ if (c is TextBox)
+ {
+ ((TextBox)c).Text = String.Empty;
+ }
+ }
+ // Clears the DataGridView
+ int numRows = dataGridView1.Rows.Count;
+for (int i = 0; i < numRows; i++)
+ {
+ try
+ {
+ int max = dataGridView1.Rows.Count - 1;
+ dataGridView1.Rows.Remove(dataGridView1.Rows[max]);
+ }
+ catch(Exception exe)
+ {
+ MessageBox.Show("All rows are to be deleted" + exe, "DataGrid View DELETE",
+ MessageBoxButtons.OK, MessageBoxIcon.Information);
+ }
+ }
+}
+private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+{
+ iReset();
+}
+
+Print button
+Bitmap bitmap;
+private void button3_Click(object sender, EventArgs e)
+{
+ int height = dataGridView1.Height;
+ dataGridView1.Height = dataGridView1.RowCount * dataGridView1.RowTemplate.Height * 
+2;
+ bitmap = new Bitmap(dataGridView1.Width, dataGridView1.Height);
+ dataGridView1.DrawToBitmap(bitmap, new Rectangle(0, 0, dataGridView1.Width, 
+dataGridView1.Height));
+ printPreviewDialog1.PrintPreviewControl.Zoom = 1;
+ printPreviewDialog1.ShowDialog();
+ dataGridView1.Height = height;
+}
+private void printDocument1_PrintPage(object sender, 
+System.Drawing.Printing.PrintPageEventArgs e)
+{
+ e.Graphics.DrawImage(bitmap, 0, 0);
+}
+private void printPreviewDialog1_Load(object sender, EventArgs e)
+{
+}
